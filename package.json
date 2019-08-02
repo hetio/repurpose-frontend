@@ -1,8 +1,9 @@
 {
-  "name": "cra",
+  "name": "repurpose-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "hetio-frontend-components": "git+https://github.com/hetio/frontend-components.git#build",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1"
@@ -10,7 +11,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
