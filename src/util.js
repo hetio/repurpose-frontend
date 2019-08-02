@@ -1,3 +1,4 @@
+// turn json data into expected format
 export function assembleData(results) {
   const newData = [];
   for (const datum of results.data) {

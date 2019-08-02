@@ -4,13 +4,12 @@ import { Component } from 'react';
 import { assembleData } from './util.js';
 import { Table } from 'hetio-frontend-components';
 import { toComma } from 'hetio-frontend-components';
-import { toFixed } from 'hetio-frontend-components';
 import { toExponential } from 'hetio-frontend-components';
 
 const dataUrl =
   'https://raw.githubusercontent.com/dhimmel/het.io-rep-data/1a960f0e353586f8fe9f61b569919f24603d4344/browser-tables/metapaths.json';
 
-export class MetapathsTable extends Component {
+export class MetapathTable extends Component {
   // initialize component
   constructor() {
     super();
@@ -28,7 +27,7 @@ export class MetapathsTable extends Component {
   // display component
   render() {
     return (
-      <div style={{ display: this.props.visible ? 'block' : 'none' }}>
+      <section style={{ display: this.props.visible ? 'block' : 'none' }}>
         <Table
           containerClass='table_container'
           defaultSortField='treats'
@@ -96,7 +95,7 @@ export class MetapathsTable extends Component {
         <div className='small light'>
           {toComma(this.state.data.length)} entries
         </div>
-      </div>
+      </section>
     );
   }
 }
