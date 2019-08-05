@@ -50,3 +50,6 @@ sub {
   margin: 0;
   padding: 0;
 }
+td.left > .dynamic_field {
+  padding-left: 5px;
+}

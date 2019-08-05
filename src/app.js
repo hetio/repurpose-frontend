@@ -20,14 +20,61 @@ export class App extends Component {
     this.state.tab = 'compounds';
     this.state.compoundId = '';
     this.state.diseaseId = '';
+
+    // listen for back/forward navigation (history)
+    window.addEventListener('popstate', this.loadStateFromUrl);
   }
 
-  setCompoundId = (id) => {
-    this.setState({ compoundId: id });
+  // when component mounts
+  componentDidMount() {
+    this.loadStateFromUrl();
+  }
+
+  // set active tab
+  setTab = (tab) => {
+    this.setState({ tab: tab }, this.updateUrl);
   };
 
+  // set selected compound
+  setCompoundId = (id) => {
+    this.setState({ compoundId: id }, this.updateUrl);
+  };
+
+  // set selected disease
   setDiseaseId = (id) => {
-    this.setState({ diseaseId: id });
+    this.setState({ diseaseId: id }, this.updateUrl);
+  };
+
+  // update url based on state
+  updateUrl = () => {
+    const params = new URLSearchParams();
+    params.set('tab', this.state.tab);
+    if (this.state.tab === 'compounds')
+      params.set('id', this.state.compoundId);
+    if (this.state.tab === 'diseases')
+      params.set('id', this.state.diseaseId.replace(':', '_'));
+
+    const url =
+      window.location.origin +
+      window.location.pathname +
+      '?' +
+      params.toString();
+    window.history.pushState({}, '', url);
+
+    document.title = params.get('id');
+  };
+
+  // load state from url
+  loadStateFromUrl = () => {
+    const params = new URLSearchParams(window.location.search);
+    const newState = {};
+    newState.tab = params.get('tab');
+    if (newState.tab === 'compounds')
+      newState.compoundId = params.get('id');
+    if (newState.tab === 'diseases')
+      newState.diseaseId = params.get('id').replace('_', ':');
+
+    this.setState(newState);
   };
 
   // display component
@@ -43,21 +90,21 @@ export class App extends Component {
         <Button
           className='tab_button'
           disabled={this.state.tab !== 'compounds'}
-          onClick={() => this.setState({ tab: 'compounds' })}
+          onClick={() => this.setTab('compounds')}
         >
           Compounds
         </Button>
         <Button
           className='tab_button'
           disabled={this.state.tab !== 'diseases'}
-          onClick={() => this.setState({ tab: 'diseases' })}
+          onClick={() => this.setTab('diseases')}
         >
           Diseases
         </Button>
         <Button
           className='tab_button'
           disabled={this.state.tab !== 'metapaths'}
-          onClick={() => this.setState({ tab: 'metapaths' })}
+          onClick={() => this.setTab('metapaths')}
         >
           Metapaths
         </Button>
