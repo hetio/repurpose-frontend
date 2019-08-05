@@ -2,10 +2,10 @@ import React from 'react';
 import { Component } from 'react';
 
 import { assembleData } from './util.js';
+import { Button } from 'hetio-frontend-components';
 import { Table } from 'hetio-frontend-components';
 import { toComma } from 'hetio-frontend-components';
 import { toFixed } from 'hetio-frontend-components';
-import { cutString } from 'hetio-frontend-components';
 
 const dataUrl =
   'https://raw.githubusercontent.com/dhimmel/het.io-rep-data/1a960f0e353586f8fe9f61b569919f24603d4344/browser-tables/compound/';
@@ -21,12 +21,13 @@ export class CompoundPredictionTable extends Component {
 
   // when component updates
   componentDidUpdate(prevProps) {
-    if (this.props.compoundId !== prevProps.compoundId)
+    if (this.props.compoundId !== prevProps.compoundId) {
       fetch(dataUrl + this.props.compoundId + '.json')
         .then((results) => results.json())
         .then((results) => {
           this.setState({ data: assembleData(results) });
         });
+    }
   }
 
   // display component
@@ -54,17 +55,10 @@ export class CompoundPredictionTable extends Component {
             'Dis Pctl',
             'Cat',
             'Trials',
-            <a
-              href='https://neo4j.het.io/browser/'
-              target='_blank'
-              rel='noopener noreferrer'
-              onClick={(event) => event.stopPropagation()}
-            >
-              Neo4j
-            </a>
+            ''
           ]}
           headStyles={[
-            { width: 150 },
+            { width: 250 },
             { width: 85 },
             { width: 85 },
             { width: 85 },
@@ -88,7 +82,7 @@ export class CompoundPredictionTable extends Component {
             'Disease percentile',
             'Category',
             'Number of trials',
-            'Copy and paste this query into the Neo4j browser'
+            'Neo4j browser'
           ]}
           bodyTooltips={[(datum) => datum.description]}
           bodyValues={[
@@ -113,27 +107,11 @@ export class CompoundPredictionTable extends Component {
             ),
             null,
             null,
-            cutString(':play https://neo4j.het.io/guides/rep/', 16)
-          ]}
-          bodyFullValues={[
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
             (datum) => (
-              <textarea
-                rows='1'
-                cols='50'
-                value={
-                  ':play https://neo4j.het.io/guides/rep/' +
-                  this.props.compoundId +
-                  '/' +
-                  datum.disease_id.replace(':', '_') +
-                  '.html'
-                }
-              />
+              <>
+                <Button>hi</Button>
+                <Button>hello</Button>
+              </>
             )
           ]}
           bodyClasses={['left']}
@@ -145,3 +123,9 @@ export class CompoundPredictionTable extends Component {
     );
   }
 }
+
+// ':play https://neo4j.het.io/guides/rep/' +
+//                   this.props.compoundId +
+//                   '/' +
+//                   datum.disease_id.replace(':', '_') +
+//                   '.html'

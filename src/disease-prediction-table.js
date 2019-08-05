@@ -21,12 +21,13 @@ export class DiseasePredictionTable extends Component {
 
   // when component updates
   componentDidUpdate(prevProps) {
-    if (this.props.diseaseId !== prevProps.diseaseId)
+    if (this.props.diseaseId !== prevProps.diseaseId) {
       fetch(dataUrl + this.props.diseaseId.replace(':', '_') + '.json')
         .then((results) => results.json())
         .then((results) => {
           this.setState({ data: assembleData(results) });
         });
+    }
   }
 
   // display component
@@ -64,7 +65,7 @@ export class DiseasePredictionTable extends Component {
             </a>
           ]}
           headStyles={[
-            { width: 150 },
+            { width: 250 },
             { width: 85 },
             { width: 85 },
             { width: 85 },

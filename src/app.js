@@ -61,7 +61,8 @@ export class App extends Component {
       params.toString();
     window.history.pushState({}, '', url);
 
-    document.title = params.get('id');
+    if (params.get('id'))
+      document.title = params.get('id');
   };
 
   // load state from url

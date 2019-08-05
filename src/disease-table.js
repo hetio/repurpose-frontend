@@ -47,13 +47,13 @@ export class DiseaseTable extends Component {
           headContents={['', 'ID', 'Name', 'Treats', 'Edges', 'AUROC']}
           headStyles={[
             { width: 35 },
-            { width: 100 },
+            { width: 80 },
             { width: 200 },
             { width: 75 },
             { width: 75 },
             { width: 75 }
           ]}
-          headClasses={['', 'small', 'small left', 'small', 'small', 'small']}
+          headClasses={['', 'small left', 'small left', 'small', 'small', 'small']}
           headTooltips={['', 'ID', 'Name', 'Treats', 'Edges', 'AUROC']}
           bodyTooltips={[
             (datum) =>
@@ -87,7 +87,7 @@ export class DiseaseTable extends Component {
                 )}
               </Button>
             ),
-            null,
+            (datum) => <code>{datum.disease_id}</code>,
             null,
             null,
             (datum) => toComma(datum.total_edges),
@@ -98,7 +98,7 @@ export class DiseaseTable extends Component {
               </>
             )
           ]}
-          bodyClasses={[null, null, 'left']}
+          bodyClasses={[null, 'small left', 'left']}
         />
         <div className='small light'>
           {toComma(this.state.data.length)} entries
