@@ -1,29 +1,12 @@
 import React from 'react';
 import { Component } from 'react';
 
-import { assembleData } from './util.js';
+import { DynamicField } from 'hetio-frontend-components';
 import { Table } from 'hetio-frontend-components';
 import { toComma } from 'hetio-frontend-components';
 import { toExponential } from 'hetio-frontend-components';
 
-const dataUrl =
-  'https://raw.githubusercontent.com/dhimmel/het.io-rep-data/1a960f0e353586f8fe9f61b569919f24603d4344/browser-tables/metapaths.json';
-
 export class MetapathTable extends Component {
-  // initialize component
-  constructor() {
-    super();
-
-    this.state = {};
-    this.state.data = [];
-
-    fetch(dataUrl)
-      .then((results) => results.json())
-      .then((results) => {
-        this.setState({ data: assembleData(results) });
-      });
-  }
-
   // display component
   render() {
     return (
@@ -32,8 +15,8 @@ export class MetapathTable extends Component {
           containerClass='table_container'
           defaultSortField='treats'
           defaultSortUp='false'
-          data={this.state.data}
-          headFields={[
+          data={this.props.data}
+          fields={[
             'metapath',
             'verbose',
             'length',
@@ -76,24 +59,32 @@ export class MetapathTable extends Component {
             'Negative log of p-value',
             'Coefficient'
           ]}
-          bodyValues={[
-            null,
-            null,
-            null,
-            (datum) => (
-              <>
-                {String(datum.delta_auroc * 100)
-                  .slice(0, 8)
-                  .padEnd(8, '0')}
-                <span>%</span>
-              </>
+          bodyContents={[
+            (datum, field, value) => <DynamicField value={value} />,
+            (datum, field, value) => <DynamicField value={value} />,
+            (datum, field, value) => <DynamicField value={value} />,
+            (datum, field, value) => (
+              <DynamicField
+                value={
+                  <>
+                    {String(value * 100)
+                      .slice(0, 8)
+                      .padEnd(8, '0')}
+                    <span>%</span>
+                  </>
+                }
+                fullValue={value}
+              />
             ),
-            (datum) => toExponential(datum.mlog10_pval_delta_auroc)
+            (datum, field, value) => (
+              <DynamicField value={toExponential(value)} fullValue={value} />
+            ),
+            (datum, field, value) => <DynamicField value={value} />
           ]}
           bodyClasses={['small', 'left small']}
         />
         <div className='small light'>
-          {toComma(this.state.data.length)} entries
+          {toComma(this.props.data.length)} entries
         </div>
       </section>
     );

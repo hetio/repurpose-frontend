@@ -3,40 +3,25 @@ import { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 
-import { assembleData } from './util.js';
+import { DynamicField } from 'hetio-frontend-components';
 import { Table } from 'hetio-frontend-components';
 import { Button } from 'hetio-frontend-components';
 import { toComma } from 'hetio-frontend-components';
 import { toFixed } from 'hetio-frontend-components';
 
-const dataUrl =
-  'https://raw.githubusercontent.com/dhimmel/het.io-rep-data/1a960f0e353586f8fe9f61b569919f24603d4344/browser-tables/diseases.json';
-
 export class DiseaseTable extends Component {
-  // initialize component
-  constructor() {
-    super();
-
-    this.state = {};
-    this.state.data = [];
-
-    fetch(dataUrl)
-      .then((results) => results.json())
-      .then((results) => {
-        this.setState({ data: assembleData(results) });
-      });
-  }
-
   // display component
   render() {
     return (
       <section style={{ display: this.props.visible ? 'block' : 'none' }}>
         <Table
           containerClass='table_container'
+          data={this.props.data}
           defaultSortField='treats'
           defaultSortUp='false'
-          data={this.state.data}
-          headFields={[
+          sortables={[false, true, true, true, true, true]}
+          searchAllFields={true}
+          fields={[
             '',
             'disease_id',
             'disease_name',
@@ -53,10 +38,17 @@ export class DiseaseTable extends Component {
             { width: 75 },
             { width: 75 }
           ]}
-          headClasses={['', 'small left', 'small left', 'small', 'small', 'small']}
+          headClasses={[
+            '',
+            'small left',
+            'small left',
+            'small',
+            'small',
+            'small'
+          ]}
           headTooltips={['', 'ID', 'Name', 'Treats', 'Edges', 'AUROC']}
           bodyTooltips={[
-            (datum) =>
+            (datum, field, value) =>
               'See predictions for "' +
               datum.disease_name +
               '" \n\n (' +
@@ -66,42 +58,47 @@ export class DiseaseTable extends Component {
                 .join(', ') +
               ')',
             null,
-            (datum) => datum.description
+            (datum, field, value) => datum.description
           ]}
-          bodyValues={[
-            (datum) => (
+          bodyContents={[
+            (datum, field, value) => (
               <Button
                 className='check_button'
                 onClick={() => {
-                  this.props.setDiseaseId(datum.disease_id);
+                  this.props.setDisease(datum);
                 }}
               >
-                {datum.disease_id === this.props.diseaseId ? (
-                  <FontAwesomeIcon className='fa-xs' icon={faEye} />
-                ) : (
-                  <FontAwesomeIcon
-                    className='fa-xs'
-                    style={{ opacity: 0.15 }}
-                    icon={faEye}
-                  />
-                )}
+                {this.props.disease &&
+                datum.disease_id === this.props.disease.disease_id ? (
+                    <FontAwesomeIcon className='fa-xs' icon={faEye} />
+                  ) : (
+                    <FontAwesomeIcon
+                      className='fa-xs'
+                      style={{ opacity: 0.15 }}
+                      icon={faEye}
+                    />
+                  )}
               </Button>
             ),
-            (datum) => <code>{datum.disease_id}</code>,
-            null,
-            null,
-            (datum) => toComma(datum.total_edges),
-            (datum) => (
-              <>
-                {toFixed(datum.auroc * 100)}
-                <span>%</span>
-              </>
+            (datum, field, value) => (
+              <DynamicField value={<code>{value}</code>} fullValue={value} />
+            ),
+            (datum, field, value) => <DynamicField value={value} />,
+            (datum, field, value) => <DynamicField value={value} />,
+            (datum, field, value) => (
+              <DynamicField value={toComma(value)} fullValue={value} />
+            ),
+            (datum, field, value) => (
+              <DynamicField
+                value={toFixed(value * 100) + '%'}
+                fullValue={value}
+              />
             )
           ]}
           bodyClasses={[null, 'small left', 'left']}
         />
         <div className='small light'>
-          {toComma(this.state.data.length)} entries
+          {toComma(this.props.data.length)} entries
         </div>
       </section>
     );

@@ -7,6 +7,8 @@ import { CompoundPredictionTable } from './compound-prediction-table.js';
 import { DiseaseTable } from './disease-table.js';
 import { DiseasePredictionTable } from './disease-prediction-table.js';
 import { MetapathTable } from './metapath-table.js';
+import { ItemInfo } from './item-info.js';
+import { fetchData } from './data.js';
 
 import './app.css';
 
@@ -18,16 +20,25 @@ export class App extends Component {
 
     this.state = {};
     this.state.tab = 'compounds';
-    this.state.compoundId = '';
-    this.state.diseaseId = '';
+    this.state.compound = null;
+    this.state.disease = null;
+    this.state.compounds = [];
+    this.state.diseases = [];
+    this.state.metapaths = [];
 
     // listen for back/forward navigation (history)
     window.addEventListener('popstate', this.loadStateFromUrl);
-  }
 
-  // when component mounts
-  componentDidMount() {
-    this.loadStateFromUrl();
+    fetchData().then((results) => {
+      this.setState(
+        {
+          compounds: results.compounds,
+          diseases: results.diseases,
+          metapaths: results.metapaths
+        },
+        this.loadStateFromUrl
+      );
+    });
   }
 
   // set active tab
@@ -36,23 +47,23 @@ export class App extends Component {
   };
 
   // set selected compound
-  setCompoundId = (id) => {
-    this.setState({ compoundId: id }, this.updateUrl);
+  setCompound = (compound) => {
+    this.setState({ compound: compound }, this.updateUrl);
   };
 
   // set selected disease
-  setDiseaseId = (id) => {
-    this.setState({ diseaseId: id }, this.updateUrl);
+  setDisease = (disease) => {
+    this.setState({ disease: disease }, this.updateUrl);
   };
 
   // update url based on state
   updateUrl = () => {
     const params = new URLSearchParams();
     params.set('tab', this.state.tab);
-    if (this.state.tab === 'compounds')
-      params.set('id', this.state.compoundId);
-    if (this.state.tab === 'diseases')
-      params.set('id', this.state.diseaseId.replace(':', '_'));
+    if (this.state.tab === 'compounds' && this.state.compound)
+      params.set('id', this.state.compound.compound_id);
+    if (this.state.tab === 'diseases' && this.state.disease)
+      params.set('id', this.state.disease.disease_id.replace(':', '_'));
 
     const url =
       window.location.origin +
@@ -69,11 +80,20 @@ export class App extends Component {
   loadStateFromUrl = () => {
     const params = new URLSearchParams(window.location.search);
     const newState = {};
-    newState.tab = params.get('tab');
-    if (newState.tab === 'compounds')
-      newState.compoundId = params.get('id');
-    if (newState.tab === 'diseases')
-      newState.diseaseId = params.get('id').replace('_', ':');
+    if (params.get('tab'))
+      newState.tab = params.get('tab');
+    let id = params.get('id');
+    if (newState.tab === 'compounds') {
+      newState.compound = this.state.compounds.find(
+        (compound) => compound.compound_id === id
+      );
+    }
+    if (newState.tab === 'diseases') {
+      id = id.replace('_', ':');
+      newState.disease = this.state.diseases.find(
+        (disease) => disease.disease_id === id
+      );
+    }
 
     this.setState(newState);
   };
@@ -110,24 +130,41 @@ export class App extends Component {
           Metapaths
         </Button>
         <CompoundTable
+          data={this.state.compounds}
           visible={this.state.tab === 'compounds'}
-          setCompoundId={this.setCompoundId}
-          compoundId={this.state.compoundId}
-        />
-        <CompoundPredictionTable
-          visible={this.state.tab === 'compounds' && this.state.compoundId}
-          compoundId={this.state.compoundId}
+          setCompound={this.setCompound}
+          compound={this.state.compound}
         />
         <DiseaseTable
+          data={this.state.diseases}
           visible={this.state.tab === 'diseases'}
-          setDiseaseId={this.setDiseaseId}
-          diseaseId={this.state.diseaseId}
+          setDisease={this.setDisease}
+          disease={this.state.disease}
+        />
+        <ItemInfo
+          visible={
+            this.state.tab === 'compounds' || this.state.tab === 'diseases'
+          }
+          item={
+            this.state.tab === 'compounds'
+              ? this.state.compound
+              : this.state.tab === 'diseases'
+                ? this.state.disease
+                : null
+          }
+        />
+        <CompoundPredictionTable
+          visible={this.state.tab === 'compounds' && this.state.compound}
+          compound={this.state.compound}
         />
         <DiseasePredictionTable
-          visible={this.state.tab === 'diseases' && this.state.diseaseId}
-          diseaseId={this.state.diseaseId}
+          visible={this.state.tab === 'diseases' && this.state.disease}
+          disease={this.state.disease}
         />
-        <MetapathTable visible={this.state.tab === 'metapaths'} />
+        <MetapathTable
+          data={this.state.metapaths}
+          visible={this.state.tab === 'metapaths'}
+        />
       </>
     );
   }
