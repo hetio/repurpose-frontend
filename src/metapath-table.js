@@ -5,6 +5,7 @@ import { DynamicField } from 'hetio-frontend-components';
 import { Table } from 'hetio-frontend-components';
 import { toComma } from 'hetio-frontend-components';
 import { toExponential } from 'hetio-frontend-components';
+import { toFixed } from 'hetio-frontend-components';
 
 export class MetapathTable extends Component {
   // display component
@@ -16,6 +17,7 @@ export class MetapathTable extends Component {
           defaultSortField='treats'
           defaultSortUp='false'
           data={this.props.data}
+          sortables={[true, true, true, true, true, true]}
           fields={[
             'metapath',
             'verbose',
@@ -29,10 +31,7 @@ export class MetapathTable extends Component {
             'Metapath',
             'Len',
             <>&Delta; AUROC</>,
-            <>
-              -log<sub>10</sub>
-              <i>p</i>
-            </>,
+            <><i>p</i>-value</>,
             'Coef'
           ]}
           headStyles={[
@@ -65,19 +64,15 @@ export class MetapathTable extends Component {
             (datum, field, value) => <DynamicField value={value} />,
             (datum, field, value) => (
               <DynamicField
-                value={
-                  <>
-                    {String(value * 100)
-                      .slice(0, 8)
-                      .padEnd(8, '0')}
-                    <span>%</span>
-                  </>
-                }
+                value={toFixed(value * 100) + '%'}
                 fullValue={value}
               />
             ),
             (datum, field, value) => (
-              <DynamicField value={toExponential(value)} fullValue={value} />
+              <DynamicField
+                value={toExponential(Math.pow(10, -value))}
+                fullValue={Math.pow(10, -value)}
+              />
             ),
             (datum, field, value) => <DynamicField value={value} />
           ]}
