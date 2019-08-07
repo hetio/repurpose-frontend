@@ -12,6 +12,7 @@ import { DynamicField } from 'hetio-frontend-components';
 import { Table } from 'hetio-frontend-components';
 import { toComma } from 'hetio-frontend-components';
 import { toFixed } from 'hetio-frontend-components';
+import { toGradient } from 'hetio-frontend-components';
 
 const dataUrl =
   'https://raw.githubusercontent.com/dhimmel/het.io-rep-data/1a960f0e353586f8fe9f61b569919f24603d4344/browser-tables/disease/';
@@ -166,6 +167,29 @@ export class DiseasePredictionTable extends Component {
                 </>
               );
             }
+          ]}
+          bodyStyles={[
+            null,
+            (datum, field, value) => ({
+              background: toGradient(value * 100, [
+                [0, 'rgba(255, 255, 255, 0)'],
+                [25, 'rgba(233, 30, 99, 0.5)']
+              ])
+            }),
+            (datum, field, value) => ({
+              background: toGradient(value * 100, [
+                [0, 'rgba(255, 255, 255, 0)'],
+                [90, 'rgba(233, 30, 99, 0.05)'],
+                [100, 'rgba(233, 30, 99, 0.15)']
+              ])
+            }),
+            (datum, field, value) => ({
+              background: toGradient(value * 100, [
+                [0, 'rgba(255, 255, 255, 0)'],
+                [90, 'rgba(233, 30, 99, 0.05)'],
+                [100, 'rgba(233, 30, 99, 0.15)']
+              ])
+            })
           ]}
           bodyClasses={['left']}
         />

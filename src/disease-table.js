@@ -11,6 +11,7 @@ import { Table } from 'hetio-frontend-components';
 import { Button } from 'hetio-frontend-components';
 import { toComma } from 'hetio-frontend-components';
 import { toFixed } from 'hetio-frontend-components';
+import { toGradient } from 'hetio-frontend-components';
 
 export class DiseaseTable extends Component {
   // initialize component
@@ -118,6 +119,20 @@ export class DiseaseTable extends Component {
                 fullValue={value}
               />
             )
+          ]}
+          bodyStyles={[
+            null,
+            null,
+            null,
+            null,
+            null,
+            (datum, field, value) => ({
+              background: toGradient(value * 100, [
+                [0, 'rgba(255, 255, 255, 0)'],
+                [50, 'rgba(255, 255, 255, 0)'],
+                [100, 'rgba(233, 30, 99, 0.5)']
+              ])
+            })
           ]}
           bodyClasses={[null, 'small left', 'left']}
         />

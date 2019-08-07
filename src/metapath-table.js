@@ -9,6 +9,7 @@ import { Table } from 'hetio-frontend-components';
 import { toComma } from 'hetio-frontend-components';
 import { toExponential } from 'hetio-frontend-components';
 import { toFixed } from 'hetio-frontend-components';
+import { toGradient } from 'hetio-frontend-components';
 
 export class MetapathTable extends Component {
   // initialize component
@@ -101,6 +102,24 @@ export class MetapathTable extends Component {
               />
             ),
             (datum, field, value) => <DynamicField value={value} />
+          ]}
+          bodyStyles={[
+            null,
+            null,
+            null,
+            (datum, field, value) => ({
+              background: toGradient(value * 100, [
+                [-25, 'rgba(233, 30, 99, 0.5)'],
+                [0, 'rgba(255, 255, 255, 0)'],
+                [25, 'rgba(233, 30, 99, 0.5)']
+              ])
+            }),
+            (datum, field, value) => ({
+              background: toGradient(Math.log10(value), [
+                [-1, 'rgba(255, 255, 255, 0)'],
+                [-8, 'rgba(233, 30, 99, 0.25)']
+              ])
+            })
           ]}
           bodyClasses={['small', 'left small']}
         />
