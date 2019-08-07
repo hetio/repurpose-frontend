@@ -2,6 +2,7 @@
   "name": "repurpose-frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "copy-to-clipboard": "^3.2.0",
     "hetio-frontend-components": "git+https://github.com/hetio/frontend-components.git#build",
