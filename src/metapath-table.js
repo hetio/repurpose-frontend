@@ -1,6 +1,9 @@
 import React from 'react';
 import { Component } from 'react';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
+import { IconButton } from 'hetio-frontend-components';
 import { DynamicField } from 'hetio-frontend-components';
 import { Table } from 'hetio-frontend-components';
 import { toComma } from 'hetio-frontend-components';
@@ -8,12 +11,33 @@ import { toExponential } from 'hetio-frontend-components';
 import { toFixed } from 'hetio-frontend-components';
 
 export class MetapathTable extends Component {
+  // initialize component
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
   // display component
   render() {
     return (
       <section style={{ display: this.props.visible ? 'block' : 'none' }}>
+        <div className='table_attic'>
+          <span className='small light'>
+            {toComma(this.props.data.length)} entries
+          </span>
+          <IconButton
+            text={this.state.showMore ? 'collapse' : 'expand'}
+            icon={this.state.showMore ? faAngleLeft : faAngleRight}
+            className='link_button small'
+            onClick={() => this.setState({ showMore: !this.state.showMore })}
+            tooltipText='Expand table'
+          />
+        </div>
         <Table
-          containerClass='table_container'
+          containerClass={
+            this.state.showMore ? 'table_container_expanded' : 'table_container'
+          }
           defaultSortField='treats'
           defaultSortUp='false'
           data={this.props.data}
@@ -31,7 +55,9 @@ export class MetapathTable extends Component {
             'Metapath',
             'Len',
             <>&Delta; AUROC</>,
-            <><i>p</i>-value</>,
+            <>
+              <i>p</i>-value
+            </>,
             'Coef'
           ]}
           headStyles={[
@@ -78,9 +104,6 @@ export class MetapathTable extends Component {
           ]}
           bodyClasses={['small', 'left small']}
         />
-        <div className='small light'>
-          {toComma(this.props.data.length)} entries
-        </div>
       </section>
     );
   }

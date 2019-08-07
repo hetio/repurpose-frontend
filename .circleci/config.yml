@@ -32,7 +32,7 @@ jobs:
             npm install --global --silent gh-pages@2.0.1
       - add_ssh_keys:
           fingerprints:
-            - "59:f7:cc:2f:9e:bf:97:12:46:a0:16:60:a2:3b:13:2a"
+            - "da:24:79:76:8e:02:ef:60:75:d2:dd:0e:80:25:8f:f5"
       - run:
           name: Deploy build to gh-pages branch
           command: |

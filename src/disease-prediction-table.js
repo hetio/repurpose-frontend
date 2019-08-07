@@ -1,6 +1,12 @@
 import React from 'react';
 import { Component } from 'react';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import copy from 'copy-to-clipboard';
 
+import { IconButton } from 'hetio-frontend-components';
 import { assembleData } from './data.js';
 import { DynamicField } from 'hetio-frontend-components';
 import { Table } from 'hetio-frontend-components';
@@ -37,8 +43,22 @@ export class DiseasePredictionTable extends Component {
   render() {
     return (
       <section style={{ display: this.props.visible ? 'block' : 'none' }}>
+        <div className='table_attic'>
+          <span className='small light'>
+            {toComma(this.state.data.length)} entries
+          </span>
+          <IconButton
+            text={this.state.showMore ? 'collapse' : 'expand'}
+            icon={this.state.showMore ? faAngleLeft : faAngleRight}
+            className='link_button small'
+            onClick={() => this.setState({ showMore: !this.state.showMore })}
+            tooltipText='Expand table'
+          />
+        </div>
         <Table
-          containerClass='table_container'
+          containerClass={
+            this.state.showMore ? 'table_container_expanded' : 'table_container'
+          }
           data={this.state.data}
           defaultSortField='prediction'
           defaultSortUp='true'
@@ -50,7 +70,8 @@ export class DiseasePredictionTable extends Component {
             'compound_percentile',
             'disease_percentile',
             'category',
-            'n_trials'
+            'n_trials',
+            ''
           ]}
           headContents={[
             'Name',
@@ -59,14 +80,7 @@ export class DiseasePredictionTable extends Component {
             'Dis Pctl',
             'Cat',
             'Trials',
-            <a
-              href='https://neo4j.het.io/browser/'
-              target='_blank'
-              rel='noopener noreferrer'
-              onClick={(event) => event.stopPropagation()}
-            >
-              Neo4j
-            </a>
+            'Neo4j Actions'
           ]}
           headStyles={[
             { width: 250 },
@@ -75,7 +89,7 @@ export class DiseasePredictionTable extends Component {
             { width: 85 },
             { width: 65 },
             { width: 65 },
-            { width: 150 }
+            { width: 200 }
           ]}
           headClasses={[
             'small left',
@@ -117,13 +131,44 @@ export class DiseasePredictionTable extends Component {
               />
             ),
             (datum, field, value) => <DynamicField value={value} />,
-            (datum, field, value) => <DynamicField value={value} />
+            (datum, field, value) => <DynamicField value={value} />,
+            (datum, field, value) => {
+              const id =
+                datum.compound_id +
+                '/' +
+                this.props.disease.disease_id.replace(':', '_') +
+                '.html';
+              const url =
+                'https://neo4j.het.io/browser/?cmd=play&arg=https://neo4j.het.io/guides/rep/' +
+                id;
+              const cmd = ':play https://neo4j.het.io/guides/rep/' + id;
+
+              return (
+                <>
+                  <IconButton
+                    className='small neo4j_button'
+                    icon={faExternalLinkAlt}
+                    text='browser'
+                    onClick={() => {
+                      const link = document.createElement('a');
+                      link.target = '_blank';
+                      link.href = url;
+                      link.click();
+                      link.remove();
+                    }}
+                  />
+                  <IconButton
+                    className='small neo4j_button clipboard_button'
+                    icon={faCopy}
+                    text='command'
+                    onClick={() => copy(cmd)}
+                  />
+                </>
+              );
+            }
           ]}
           bodyClasses={['left']}
         />
-        <div className='small light'>
-          {toComma(this.state.data.length)} entries
-        </div>
       </section>
     );
   }

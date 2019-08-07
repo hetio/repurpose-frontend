@@ -89,7 +89,8 @@ export class App extends Component {
       );
     }
     if (newState.tab === 'diseases') {
-      id = id.replace('_', ':');
+      if (id)
+        id = id.replace('_', ':');
       newState.disease = this.state.diseases.find(
         (disease) => disease.disease_id === id
       );
@@ -129,6 +130,7 @@ export class App extends Component {
         >
           Metapaths
         </Button>
+
         <CompoundTable
           data={this.state.compounds}
           visible={this.state.tab === 'compounds'}
