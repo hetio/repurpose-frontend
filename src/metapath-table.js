@@ -115,7 +115,7 @@ export class MetapathTable extends Component {
               ])
             }),
             (datum, field, value) => ({
-              background: toGradient(Math.log10(value), [
+              background: toGradient(-value, [
                 [-1, 'rgba(255, 255, 255, 0)'],
                 [-8, 'rgba(233, 30, 99, 0.25)']
               ])
