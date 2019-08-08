@@ -37,7 +37,7 @@ sub {
   transition: background 0.25s ease;
 }
 .tab_button[data-disabled='false']:after {
-  background: var(--blue)table ;
+  background: var(--blue);
 }
 @media screen and (max-width: 480px) {
   .tab_button {
