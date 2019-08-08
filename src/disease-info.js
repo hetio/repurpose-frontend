@@ -5,30 +5,30 @@ import { toFixed } from 'hetio-frontend-components';
 import { toComma } from 'hetio-frontend-components';
 import { DynamicField } from 'hetio-frontend-components';
 
-// main app component
-export class ItemInfo extends Component {
+export class DiseaseInfo extends Component {
+  // display component
   render() {
-    const item = this.props.item;
-    if (!item)
-      return <></>;
-
-    const name = item.compound_name || item.disease_name || '';
+    const disease = this.props.disease || {};
+    const name = disease.disease_name || '-';
     const fields = [
-      ['id', item.compound_id || item.disease_id || ''],
-      ['description', item.description || ''],
-      ['synonyms', item.synonyms || ''],
-      ['treats', item.treats],
-      ['palliates', item.palliates],
-      ['relationships', toComma(item.total_edges)],
-      ['auroc', toFixed((item.auroc || 0) * 100) + '%']
+      ['id', disease.disease_id || '-'],
+      ['description', disease.description || '-'],
+      ['synonyms', disease.synonyms || '-'],
+      ['treats', disease.treats],
+      ['palliates', disease.palliates],
+      ['relationships', toComma(disease.total_edges)],
+      ['auroc', toFixed((disease.auroc || 0) * 100) + '%']
     ];
 
     return (
       <>
         <hr />
-        <section style={{ display: this.props.visible ? 'block' : 'none' }}>
+        <section>
           <p className='left'>
-            Info about <span className='semibold'>{name}</span>:
+            Info about{' '}
+            <b>
+              <i>{name}</i>
+            </b>
           </p>
           <table className='info_table'>
             <tbody>
@@ -43,10 +43,6 @@ export class ItemInfo extends Component {
             </tbody>
           </table>
         </section>
-        <hr />
-        <p className='left'>
-          Predicted treatments for <span className='semibold'>{name}</span>:
-        </p>
       </>
     );
   }
