@@ -33,11 +33,11 @@ sub {
   right: 0;
   bottom: 0;
   height: 2px;
-  background: #e0e0e0;
+  background: var(--light-gray);
   transition: background 0.25s ease;
 }
 .tab_button[data-disabled='false']:after {
-  background: #02b3e4;
+  background: var(--blue)table ;
 }
 @media screen and (max-width: 480px) {
   .tab_button {
