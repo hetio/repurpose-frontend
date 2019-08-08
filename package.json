@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "node ./scripts/build-non-split.js",
     "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject"
   },
@@ -34,6 +34,7 @@
   "devDependencies": {
     "eslint-config-google": "^0.13.0",
     "eslint-plugin-html": "^6.0.0",
-    "eslint-plugin-react": "^7.14.3"
+    "eslint-plugin-react": "^7.14.3",
+    "rewire": "^4.0.1"
   }
 }
