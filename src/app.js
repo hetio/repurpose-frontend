@@ -2,12 +2,13 @@ import React from 'react';
 import { Component } from 'react';
 
 import { Button } from 'hetio-frontend-components';
-import { CompoundTable } from './compound-table.js';
-import { CompoundPredictionTable } from './compound-prediction-table.js';
-import { DiseaseTable } from './disease-table.js';
-import { DiseasePredictionTable } from './disease-prediction-table.js';
-import { MetapathTable } from './metapath-table.js';
-import { ItemInfo } from './item-info.js';
+import { Compounds } from './compounds.js';
+import { CompoundInfo } from './compound-info.js';
+import { CompoundPredictions } from './compound-predictions.js';
+import { Diseases } from './diseases.js';
+import { DiseaseInfo } from './disease-info.js';
+import { DiseasePredictions } from './disease-predictions.js';
+import { Metapaths } from './metapaths.js';
 import { fetchData } from './data.js';
 
 import './app.css';
@@ -124,43 +125,37 @@ export class App extends Component {
         >
           Metapaths
         </Button>
-
-        <CompoundTable
-          data={this.state.compounds}
-          visible={this.state.tab === 'compounds'}
-          setCompound={this.setCompound}
-          compound={this.state.compound}
-        />
-        <DiseaseTable
-          data={this.state.diseases}
-          visible={this.state.tab === 'diseases'}
-          setDisease={this.setDisease}
-          disease={this.state.disease}
-        />
-        <ItemInfo
-          visible={
-            this.state.tab === 'compounds' || this.state.tab === 'diseases'
-          }
-          item={
-            this.state.tab === 'compounds'
-              ? this.state.compound
-              : this.state.tab === 'diseases'
-                ? this.state.disease
-                : null
-          }
-        />
-        <CompoundPredictionTable
-          visible={this.state.tab === 'compounds' && this.state.compound}
-          compound={this.state.compound}
-        />
-        <DiseasePredictionTable
-          visible={this.state.tab === 'diseases' && this.state.disease}
-          disease={this.state.disease}
-        />
-        <MetapathTable
-          data={this.state.metapaths}
-          visible={this.state.tab === 'metapaths'}
-        />
+        <div
+          style={{ display: this.state.tab === 'compounds' ? 'block' : 'none' }}
+        >
+          <Compounds
+            compounds={this.state.compounds}
+            setCompound={this.setCompound}
+            compound={this.state.compound}
+          />
+          <div style={{ display: this.state.compound ? 'block' : 'none' }}>
+            <CompoundInfo compound={this.state.compound} />
+            <CompoundPredictions compound={this.state.compound} />
+          </div>
+        </div>
+        <div
+          style={{ display: this.state.tab === 'diseases' ? 'block' : 'none' }}
+        >
+          <Diseases
+            diseases={this.state.diseases}
+            setDisease={this.setDisease}
+            disease={this.state.disease}
+          />
+          <div style={{ display: this.state.disease ? 'block' : 'none' }}>
+            <DiseaseInfo disease={this.state.disease} />
+            <DiseasePredictions disease={this.state.disease} />
+          </div>
+        </div>
+        <div
+          style={{ display: this.state.tab === 'metapaths' ? 'block' : 'none' }}
+        >
+          <Metapaths metapaths={this.state.metapaths} />
+        </div>
       </>
     );
   }

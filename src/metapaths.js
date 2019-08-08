@@ -11,7 +11,7 @@ import { toExponential } from 'hetio-frontend-components';
 import { toFixed } from 'hetio-frontend-components';
 import { toGradient } from 'hetio-frontend-components';
 
-export class MetapathTable extends Component {
+export class Metapaths extends Component {
   // initialize component
   constructor(props) {
     super(props);
@@ -22,10 +22,10 @@ export class MetapathTable extends Component {
   // display component
   render() {
     return (
-      <section style={{ display: this.props.visible ? 'block' : 'none' }}>
+      <section>
         <div className='table_attic'>
           <span className='small light'>
-            {toComma(this.props.data.length)} entries
+            {toComma(this.props.metapaths.length)} entries
           </span>
           <IconButton
             text={this.state.showMore ? 'collapse' : 'expand'}
@@ -41,7 +41,7 @@ export class MetapathTable extends Component {
           }
           defaultSortField='treats'
           defaultSortUp='false'
-          data={this.props.data}
+          data={this.props.metapaths}
           sortables={[true, true, true, true, true, true]}
           fields={[
             'metapath',

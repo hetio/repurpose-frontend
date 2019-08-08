@@ -13,7 +13,7 @@ import { toComma } from 'hetio-frontend-components';
 import { toFixed } from 'hetio-frontend-components';
 import { toGradient } from 'hetio-frontend-components';
 
-export class DiseaseTable extends Component {
+export class Diseases extends Component {
   // initialize component
   constructor() {
     super();
@@ -24,10 +24,10 @@ export class DiseaseTable extends Component {
   // display component
   render() {
     return (
-      <section style={{ display: this.props.visible ? 'block' : 'none' }}>
+      <section>
         <div className='table_attic'>
           <span className='small light'>
-            {toComma(this.props.data.length)} entries
+            {toComma(this.props.diseases.length)} entries
           </span>
           <IconButton
             text={this.state.showMore ? 'collapse' : 'expand'}
@@ -41,7 +41,7 @@ export class DiseaseTable extends Component {
           containerClass={
             this.state.showMore ? 'table_container_expanded' : 'table_container'
           }
-          data={this.props.data}
+          data={this.props.diseases}
           defaultSortField='treats'
           defaultSortUp='false'
           sortables={[false, true, true, true, true, true]}

@@ -60,12 +60,13 @@ td.left:first-child {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 10px 0;
 }
 .info_table td {
   height: 20px;
 }
 .info_table td:first-child {
-  width: 100px;
+  width: 120px;
 }
 .neo4j_button {
   width: 50%;

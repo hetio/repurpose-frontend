@@ -5,6 +5,7 @@ const diseasesUrl =
 const metapathsUrl =
   'https://raw.githubusercontent.com/dhimmel/het.io-rep-data/1a960f0e353586f8fe9f61b569919f24603d4344/browser-tables/metapaths.json';
 
+// get data from above urls
 export async function fetchData() {
   const compounds = await (await fetch(compoundsUrl)).json();
   const diseases = await (await fetch(diseasesUrl)).json();
