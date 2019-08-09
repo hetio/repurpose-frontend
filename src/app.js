@@ -2,6 +2,9 @@ import React from 'react';
 import { Component } from 'react';
 
 import { Button } from 'hetio-frontend-components';
+import { fetchMainData } from './data.js';
+import { fetchCompoundPredictions } from './data.js';
+import { fetchDiseasePredictions } from './data.js';
 import { Compounds } from './compounds.js';
 import { CompoundInfo } from './compound-info.js';
 import { CompoundPredictions } from './compound-predictions.js';
@@ -9,7 +12,6 @@ import { Diseases } from './diseases.js';
 import { DiseaseInfo } from './disease-info.js';
 import { DiseasePredictions } from './disease-predictions.js';
 import { Metapaths } from './metapaths.js';
-import { fetchData } from './data.js';
 
 import './app.css';
 
@@ -21,25 +23,19 @@ export class App extends Component {
 
     this.state = {};
     this.state.tab = 'compounds';
-    this.state.compound = null;
-    this.state.disease = null;
     this.state.compounds = [];
     this.state.diseases = [];
     this.state.metapaths = [];
+    this.state.compound = null;
+    this.state.disease = null;
+    this.compoundPredictions = [];
+    this.diseasePredictions = [];
 
+    fetchMainData().then((results) =>
+      this.setState(results, this.loadStateFromUrl)
+    );
     // listen for back/forward navigation (history)
     window.addEventListener('popstate', this.loadStateFromUrl);
-
-    fetchData().then((results) => {
-      this.setState(
-        {
-          compounds: results.compounds,
-          diseases: results.diseases,
-          metapaths: results.metapaths
-        },
-        this.loadStateFromUrl
-      );
-    });
   }
 
   // set active tab
@@ -49,20 +45,26 @@ export class App extends Component {
 
   // set selected compound
   setCompound = (compound) => {
-    this.setState({ compound: compound }, this.updateUrl);
+    setCompound(compound).then((results) =>
+      this.setState(results, this.updateUrl)
+    );
   };
 
   // set selected disease
   setDisease = (disease) => {
-    this.setState({ disease: disease }, this.updateUrl);
+    setDisease(disease).then((results) =>
+      this.setState(results, this.updateUrl)
+    );
   };
 
   // update url based on state
   updateUrl = () => {
     const params = new URLSearchParams();
+
     params.set('tab', this.state.tab);
+
     if (this.state.tab === 'compounds' && this.state.compound)
-      params.set('id', this.state.compound.compound_id);
+      params.set('id', this.state.compound.compound_id.replace(':', '_'));
     if (this.state.tab === 'diseases' && this.state.disease)
       params.set('id', this.state.disease.disease_id.replace(':', '_'));
 
@@ -71,33 +73,15 @@ export class App extends Component {
       window.location.pathname +
       '?' +
       params.toString();
-    window.history.pushState({}, '', url);
 
+    window.history.pushState({}, '', url);
     if (params.get('id'))
       document.title = params.get('id');
   };
 
   // load state from url
   loadStateFromUrl = () => {
-    const params = new URLSearchParams(window.location.search);
-    const newState = {};
-    if (params.get('tab'))
-      newState.tab = params.get('tab');
-    let id = params.get('id');
-    if (newState.tab === 'compounds') {
-      newState.compound = this.state.compounds.find(
-        (compound) => compound.compound_id === id
-      );
-    }
-    if (newState.tab === 'diseases') {
-      if (id)
-        id = id.replace('_', ':');
-      newState.disease = this.state.diseases.find(
-        (disease) => disease.disease_id === id
-      );
-    }
-
-    this.setState(newState);
+    loadStateFromUrl(this.state).then((results) => this.setState(results));
   };
 
   // display component
@@ -125,38 +109,97 @@ export class App extends Component {
         >
           Metapaths
         </Button>
-        <div
-          style={{ display: this.state.tab === 'compounds' ? 'block' : 'none' }}
-        >
-          <Compounds
-            compounds={this.state.compounds}
-            setCompound={this.setCompound}
-            compound={this.state.compound}
-          />
-          <div style={{ display: this.state.compound ? 'block' : 'none' }}>
-            <CompoundInfo compound={this.state.compound} />
-            <CompoundPredictions compound={this.state.compound} />
-          </div>
-        </div>
-        <div
-          style={{ display: this.state.tab === 'diseases' ? 'block' : 'none' }}
-        >
-          <Diseases
-            diseases={this.state.diseases}
-            setDisease={this.setDisease}
-            disease={this.state.disease}
-          />
-          <div style={{ display: this.state.disease ? 'block' : 'none' }}>
-            <DiseaseInfo disease={this.state.disease} />
-            <DiseasePredictions disease={this.state.disease} />
-          </div>
-        </div>
-        <div
-          style={{ display: this.state.tab === 'metapaths' ? 'block' : 'none' }}
-        >
-          <Metapaths metapaths={this.state.metapaths} />
-        </div>
+        <Compounds
+          visible={this.state.tab === 'compounds'}
+          compounds={this.state.compounds}
+          setCompound={this.setCompound}
+          compound={this.state.compound}
+        />
+        <CompoundInfo
+          visible={this.state.tab === 'compounds'}
+          compound={this.state.compound}
+          compoundInfo={this.state.compoundInfo}
+        />
+        <CompoundPredictions
+          visible={this.state.tab === 'compounds'}
+          compound={this.state.compound}
+          compoundPredictions={this.state.compoundPredictions}
+        />
+        <Diseases
+          visible={this.state.tab === 'diseases'}
+          diseases={this.state.diseases}
+          setDisease={this.setDisease}
+          disease={this.state.disease}
+        />
+        <DiseaseInfo
+          visible={this.state.tab === 'diseases'}
+          disease={this.state.disease}
+          diseaseInfo={this.state.diseaseInfo}
+        />
+        <DiseasePredictions
+          visible={this.state.tab === 'diseases'}
+          disease={this.state.disease}
+          diseasePredictions={this.state.diseasePredictions}
+        />
+        <Metapaths
+          visible={this.state.tab === 'metapaths'}
+          metapaths={this.state.metapaths}
+        />
       </>
     );
   }
+}
+
+// set selected compound
+async function setCompound(compound) {
+  if (!compound)
+    return {};
+
+  const compoundPredictions = await fetchCompoundPredictions(
+    compound.compound_id
+  );
+  return { compound: compound, ...compoundPredictions };
+}
+
+// set selected disease
+async function setDisease(disease) {
+  if (!disease)
+    return {};
+
+  const diseasePredictions = await fetchDiseasePredictions(disease.disease_id);
+  return { disease: disease, ...diseasePredictions };
+}
+
+// load state from url
+async function loadStateFromUrl(state) {
+  // get parameters from url
+  const params = new URLSearchParams(window.location.search);
+  const tab = params.get('tab');
+  const id = (params.get('id') || '').replace('_', ':');
+
+  let newState = {};
+
+  // set tab
+  if (tab)
+    newState.tab = tab;
+
+  // if compounds tab
+  if (tab === 'compounds' && id) {
+    // set compound and compound prediction
+    newState.compound = state.compounds.find(
+      (compound) => compound.compound_id === id
+    );
+    newState = { ...newState, ...(await setCompound(newState.compound)) };
+  }
+
+  // if diseases tab
+  if (tab === 'diseases' && id) {
+    // set disease and disease prediction
+    newState.disease = state.diseases.find(
+      (disease) => disease.disease_id === id
+    );
+    newState = { ...newState, ...(await setDisease(newState.disease)) };
+  }
+
+  return newState;
 }
