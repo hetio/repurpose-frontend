@@ -56,8 +56,8 @@ export class Diseases extends Component {
           ]}
           headContents={['', 'ID', 'Name', 'Treats', 'Edges', 'AUROC']}
           headStyles={[
-            { width: 35 },
-            { width: 80 },
+            { width: 25 },
+            { width: 75 },
             { width: 200 },
             { width: 75 },
             { width: 75 },
@@ -71,7 +71,6 @@ export class Diseases extends Component {
             'small',
             'small'
           ]}
-          headTooltips={['', 'ID', 'Name', 'Treats', 'Edges', 'AUROC']}
           bodyTooltips={[
             (datum, field, value) =>
               'See predictions for "' +
