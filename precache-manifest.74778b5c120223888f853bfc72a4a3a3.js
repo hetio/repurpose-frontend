@@ -4,11 +4,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "./index.html"
   },
   {
-    "revision": "e3cc6e2c48927a14aa94",
+    "revision": "98f3c82b94b4ba1df4a5",
     "url": "./static/css/main.css"
   },
   {
-    "revision": "e3cc6e2c48927a14aa94",
+    "revision": "98f3c82b94b4ba1df4a5",
     "url": "./static/js/main.js"
   }
 ]);
