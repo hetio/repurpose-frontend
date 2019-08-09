@@ -93,12 +93,12 @@ export class DiseasePredictions extends Component {
               'Neo4j Actions'
             ]}
             headStyles={[
-              { width: 250 },
-              { width: 85 },
-              { width: 85 },
-              { width: 85 },
-              { width: 65 },
-              { width: 65 },
+              { width: 200 },
+              { width: 75 },
+              { width: 75 },
+              { width: 75 },
+              { width: 50 },
+              { width: 50 },
               { width: 200 }
             ]}
             headClasses={[
@@ -109,15 +109,6 @@ export class DiseasePredictions extends Component {
               'small',
               'small',
               'small'
-            ]}
-            headTooltips={[
-              'Disease name',
-              'Prediction',
-              'Compound percentile',
-              'Disease percentile',
-              'Category',
-              'Number of trials',
-              'Copy and paste this query into the Neo4j browser'
             ]}
             bodyTooltips={[(datum, field, value) => datum.description]}
             bodyContents={[

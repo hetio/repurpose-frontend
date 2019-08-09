@@ -53,9 +53,6 @@ sub {
 td.left > .dynamic_field {
   padding-left: 5px;
 }
-td.left:first-child {
-  padding-left: 5px;
-}
 .table_attic {
   display: flex;
   justify-content: space-between;

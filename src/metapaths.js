@@ -64,7 +64,7 @@ export class Metapaths extends Component {
           headStyles={[
             { width: 125 },
             { width: 300 },
-            { width: 65 },
+            { width: 50 },
             { width: 100 },
             { width: 100 },
             { width: 100 }
@@ -76,14 +76,6 @@ export class Metapaths extends Component {
             'small',
             'small',
             'small'
-          ]}
-          headTooltips={[
-            'Abbreviation',
-            'Metapath description',
-            'Metapath length',
-            'Percent change in AUROC',
-            'Negative log of p-value',
-            'Coefficient'
           ]}
           bodyContents={[
             (datum, field, value) => <DynamicField value={value} />,
