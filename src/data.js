@@ -5,8 +5,12 @@ const diseasesUrl =
 const metapathsUrl =
   'https://raw.githubusercontent.com/dhimmel/het.io-rep-data/1a960f0e353586f8fe9f61b569919f24603d4344/browser-tables/metapaths.json';
 
-// get data from above urls
-export async function fetchData() {
+const compoundPredictionsUrl =
+  'https://raw.githubusercontent.com/dhimmel/het.io-rep-data/1a960f0e353586f8fe9f61b569919f24603d4344/browser-tables/compound/';
+const diseasePredictionsUrl =
+  'https://raw.githubusercontent.com/dhimmel/het.io-rep-data/1a960f0e353586f8fe9f61b569919f24603d4344/browser-tables/disease/';
+
+export async function fetchMainData() {
   const compounds = await (await fetch(compoundsUrl)).json();
   const diseases = await (await fetch(diseasesUrl)).json();
   const metapaths = await (await fetch(metapathsUrl)).json();
@@ -16,6 +20,22 @@ export async function fetchData() {
     diseases: assembleData(diseases),
     metapaths: assembleData(metapaths)
   };
+}
+
+export async function fetchCompoundPredictions(compoundId) {
+  const compoundPredictions = await (await fetch(
+    compoundPredictionsUrl + compoundId.replace(':', '_') + '.json'
+  )).json();
+
+  return { compoundPredictions: assembleData(compoundPredictions) };
+}
+
+export async function fetchDiseasePredictions(diseaseId) {
+  const diseasePredictions = await (await fetch(
+    diseasePredictionsUrl + diseaseId.replace(':', '_') + '.json'
+  )).json();
+
+  return { diseasePredictions: assembleData(diseasePredictions) };
 }
 
 // turn json data into expected format

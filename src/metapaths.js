@@ -22,7 +22,7 @@ export class Metapaths extends Component {
   // display component
   render() {
     return (
-      <section>
+      <section style={{ display: this.props.visible ? 'block' : 'none' }}>
         <div className='table_attic'>
           <span className='small light'>
             {toComma(this.props.metapaths.length)} entries
@@ -39,7 +39,7 @@ export class Metapaths extends Component {
           containerClass={
             this.state.showMore ? 'table_container_expanded' : 'table_container'
           }
-          defaultSortField='treats'
+          defaultSortField='mlog10_pval_delta_auroc'
           defaultSortUp='false'
           data={this.props.metapaths}
           sortables={[true, true, true, true, true, true]}
@@ -62,15 +62,15 @@ export class Metapaths extends Component {
             'Coef'
           ]}
           headStyles={[
-            { width: 125 },
-            { width: 300 },
-            { width: 50 },
             { width: 100 },
+            { width: 200 },
+            { width: 75 },
+            { width: 75 },
             { width: 100 },
-            { width: 100 }
+            { width: 75 }
           ]}
           headClasses={[
-            'small',
+            'small left',
             'small left',
             'small',
             'small',
@@ -93,7 +93,9 @@ export class Metapaths extends Component {
                 fullValue={Math.pow(10, -value)}
               />
             ),
-            (datum, field, value) => <DynamicField value={value} />
+            (datum, field, value) => (
+              <DynamicField value={toFixed(value, 3)} fullValue={value} />
+            )
           ]}
           bodyStyles={[
             null,
@@ -113,7 +115,7 @@ export class Metapaths extends Component {
               ])
             })
           ]}
-          bodyClasses={['small', 'left small']}
+          bodyClasses={['left small', 'left small']}
         />
       </section>
     );

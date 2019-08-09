@@ -12,6 +12,7 @@ import { Button } from 'hetio-frontend-components';
 import { toComma } from 'hetio-frontend-components';
 import { toFixed } from 'hetio-frontend-components';
 import { toGradient } from 'hetio-frontend-components';
+import { compareObjects } from 'hetio-frontend-components';
 
 export class Compounds extends Component {
   // initialize component
@@ -24,7 +25,7 @@ export class Compounds extends Component {
   // display component
   render() {
     return (
-      <section>
+      <section style={{ display: this.props.visible ? 'block' : 'none' }}>
         <div className='table_attic'>
           <span className='small light'>
             {toComma(this.props.compounds.length)} entries
@@ -73,14 +74,7 @@ export class Compounds extends Component {
           ]}
           bodyTooltips={[
             (datum, field, value) =>
-              'See predictions for "' +
-              datum.compound_name +
-              '" \n\n (' +
-              datum.synonyms
-                .split(' | ')
-                .slice(0, 20)
-                .join(', ') +
-              ')',
+              'See predictions and info for "' + datum.compound_name + '"',
             null,
             (datum, field, value) => datum.description
           ]}
@@ -92,16 +86,15 @@ export class Compounds extends Component {
                   this.props.setCompound(datum);
                 }}
               >
-                {this.props.compound &&
-                datum.compound_id === this.props.compound.compound_id ? (
-                    <FontAwesomeIcon className='fa-xs' icon={faEye} />
-                  ) : (
-                    <FontAwesomeIcon
-                      className='fa-xs'
-                      style={{ opacity: 0.15 }}
-                      icon={faEye}
-                    />
-                  )}
+                <FontAwesomeIcon
+                  className='fa-xs'
+                  style={{
+                    opacity: compareObjects(datum, this.props.compound)
+                      ? 1
+                      : 0.15
+                  }}
+                  icon={faEye}
+                />
               </Button>
             ),
             (datum, field, value) => (
