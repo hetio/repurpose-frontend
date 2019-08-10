@@ -22,7 +22,7 @@ export class Metapaths extends Component {
   // display component
   render() {
     return (
-      <section style={{ display: this.props.visible ? 'block' : 'none' }}>
+      <div className='app_section' style={{ display: this.props.visible ? 'block' : 'none' }}>
         <div className='table_attic'>
           <span className='small light'>
             {toComma(this.props.metapaths.length)} entries
@@ -117,7 +117,7 @@ export class Metapaths extends Component {
           ]}
           bodyClasses={['left small', 'left small']}
         />
-      </section>
+      </div>
     );
   }
 }
