@@ -2,6 +2,9 @@
   text-align: center;
 }
 
+.app_section {
+  margin: 20px 0;
+}
 table tr th {
   height: 40px;
 }

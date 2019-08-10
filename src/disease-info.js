@@ -24,7 +24,7 @@ export class DiseaseInfo extends Component {
     ];
 
     return (
-      <section style={{ display: this.props.visible ? 'block' : 'none' }}>
+      <div className='app_section' style={{ display: this.props.visible ? 'block' : 'none' }}>
         <hr />
         <p className='left'>
           Info about{' '}
@@ -33,7 +33,7 @@ export class DiseaseInfo extends Component {
           </b>
         </p>
         <InfoTable bodyContents={bodyContents} />
-      </section>
+      </div>
     );
   }
 }
