@@ -14,6 +14,8 @@ import { toFixed } from 'hetio-frontend-components';
 import { toGradient } from 'hetio-frontend-components';
 import { compareObjects } from 'hetio-frontend-components';
 
+import tooltipText from './tooltip-text.json';
+
 export class Diseases extends Component {
   // initialize component
   constructor() {
@@ -25,7 +27,10 @@ export class Diseases extends Component {
   // display component
   render() {
     return (
-      <div className='app_section' style={{ display: this.props.visible ? 'block' : 'none' }}>
+      <div
+        className='app_section'
+        style={{ display: this.props.visible ? 'block' : 'none' }}
+      >
         <div className='table_attic'>
           <span className='small light'>
             {toComma(this.props.diseases.length)} entries
@@ -71,6 +76,14 @@ export class Diseases extends Component {
             'small',
             'small',
             'small'
+          ]}
+          headTooltips={[
+            '',
+            tooltipText['disease_id'],
+            tooltipText['disease_name'],
+            tooltipText['disease_treats'],
+            tooltipText['disease_edges'],
+            tooltipText['auroc']
           ]}
           bodyTooltips={[
             (datum, field, value) =>

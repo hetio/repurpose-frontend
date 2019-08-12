@@ -92,6 +92,7 @@ export class App extends Component {
           className='tab_button'
           disabled={this.state.tab !== 'compounds'}
           onClick={() => this.setTab('compounds')}
+          tooltipText='Select a compound and show predictions for all diseases'
         >
           Compounds
         </Button>
@@ -99,6 +100,7 @@ export class App extends Component {
           className='tab_button'
           disabled={this.state.tab !== 'diseases'}
           onClick={() => this.setTab('diseases')}
+          tooltipText='Select a disease and show predictions for all compounds'
         >
           Diseases
         </Button>
@@ -106,6 +108,8 @@ export class App extends Component {
           className='tab_button'
           disabled={this.state.tab !== 'metapaths'}
           onClick={() => this.setTab('metapaths')}
+          tooltipText='Browse types of paths (metapaths) that connect compounds
+           to disease and their ability to predict drug efficacy'
         >
           Metapaths
         </Button>

@@ -11,6 +11,8 @@ import { toExponential } from 'hetio-frontend-components';
 import { toFixed } from 'hetio-frontend-components';
 import { toGradient } from 'hetio-frontend-components';
 
+import tooltipText from './tooltip-text.json';
+
 export class Metapaths extends Component {
   // initialize component
   constructor(props) {
@@ -22,7 +24,10 @@ export class Metapaths extends Component {
   // display component
   render() {
     return (
-      <div className='app_section' style={{ display: this.props.visible ? 'block' : 'none' }}>
+      <div
+        className='app_section'
+        style={{ display: this.props.visible ? 'block' : 'none' }}
+      >
         <div className='table_attic'>
           <span className='small light'>
             {toComma(this.props.metapaths.length)} entries
@@ -76,6 +81,14 @@ export class Metapaths extends Component {
             'small',
             'small',
             'small'
+          ]}
+          headTooltips={[
+            tooltipText['metapath_abbreviation'],
+            tooltipText['metapath_full'],
+            tooltipText['metapath_length'],
+            tooltipText['metapath_delta_auroc'],
+            tooltipText['metapath_p_value'],
+            tooltipText['metapath_coefficient']
           ]}
           bodyContents={[
             (datum, field, value) => <DynamicField value={value} />,

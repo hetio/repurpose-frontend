@@ -13,6 +13,8 @@ import { toComma } from 'hetio-frontend-components';
 import { toFixed } from 'hetio-frontend-components';
 import { toGradient } from 'hetio-frontend-components';
 
+import tooltipText from './tooltip-text.json';
+
 export class CompoundPredictions extends Component {
   // initialize component
   constructor(props) {
@@ -26,13 +28,18 @@ export class CompoundPredictions extends Component {
     if (!this.props.compound)
       return <></>;
 
+    const name = (this.props.compound || {}).compound_name || '';
+
     return (
-      <div className='app_section' style={{ display: this.props.visible ? 'block' : 'none' }}>
+      <div
+        className='app_section'
+        style={{ display: this.props.visible ? 'block' : 'none' }}
+      >
         <hr />
         <p className='left'>
           Predictions for{' '}
           <b>
-            <i>{(this.props.compound || {}).compound_name || ''}</i>
+            <i>{name}</i>
           </b>
         </p>
         <div className='table_attic'>
@@ -92,6 +99,15 @@ export class CompoundPredictions extends Component {
             'small',
             'small'
           ]}
+          headTooltips={[
+            tooltipText['disease_name'],
+            tooltipText['compound_prediction'].replace('{_}', name),
+            tooltipText['prediction_percentile'].replace('{_}', name),
+            tooltipText['prediction_percentile'].replace('{_}', 'the disease'),
+            tooltipText['category'],
+            tooltipText['trials'],
+            tooltipText['neo4j']
+          ]}
           bodyTooltips={[(datum, field, value) => datum.description]}
           bodyContents={[
             (datum, field, value) => <DynamicField value={value} />,
@@ -139,12 +155,14 @@ export class CompoundPredictions extends Component {
                       link.click();
                       link.remove();
                     }}
+                    tooltipText={tooltipText['neo4j_browser']}
                   />
                   <IconButton
                     className='small neo4j_button clipboard_button'
                     icon={faCopy}
                     text='command'
                     onClick={() => copy(cmd)}
+                    tooltipText={tooltipText['neo4j_command']}
                   />
                 </>
               );
