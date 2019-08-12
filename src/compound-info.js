@@ -1,5 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { toFixed } from 'hetio-frontend-components';
 import { toComma } from 'hetio-frontend-components';
@@ -16,7 +18,20 @@ export class CompoundInfo extends Component {
     const compound = this.props.compound;
     const name = compound.compound_name;
     const bodyContents = [
-      ['id', tooltipText['compound_id'], compound.compound_id],
+      [
+        'id',
+        tooltipText['compound_id'],
+        <>
+          <a href={'https://www.drugbank.ca/drugs/' + compound.compound_id}>
+            {compound.compound_id}
+            <FontAwesomeIcon
+              className='external_link_icon'
+              icon={faExternalLinkAlt}
+              size='xs'
+            />
+          </a>
+        </>
+      ],
       [
         'description',
         tooltipText['compound_description'],

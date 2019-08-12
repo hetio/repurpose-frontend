@@ -70,3 +70,8 @@ td.left > .dynamic_field {
   height: 100%;
   margin: 0;
 }
+.external_link_icon {
+  position: relative;
+  top: -1px;
+  margin-left: 5px;
+}

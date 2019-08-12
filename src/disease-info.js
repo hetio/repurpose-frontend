@@ -1,5 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { toFixed } from 'hetio-frontend-components';
 import { toComma } from 'hetio-frontend-components';
@@ -16,7 +18,18 @@ export class DiseaseInfo extends Component {
     const disease = this.props.disease;
     const name = disease.disease_name;
     const bodyContents = [
-      ['id', tooltipText['disease_id'], disease.disease_id],
+      [
+        'id',
+        tooltipText['disease_id'],
+        <a href={'http://www.disease-ontology.org/?id=' + disease.disease_id}>
+          {disease.disease_id}
+          <FontAwesomeIcon
+            className='external_link_icon'
+            icon={faExternalLinkAlt}
+            size='xs'
+          />
+        </a>
+      ],
       ['description', tooltipText['disease_description'], disease.description],
       ['synonyms', tooltipText['disease_synonyms'], disease.synonyms],
       ['treats', tooltipText['disease_treats'], disease.treats],
