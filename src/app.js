@@ -34,8 +34,17 @@ export class App extends Component {
     fetchMainData().then((results) =>
       this.setState(results, this.loadStateFromUrl)
     );
+  }
+
+  // when component mounds
+  componentDidMount() {
     // listen for back/forward navigation (history)
     window.addEventListener('popstate', this.loadStateFromUrl);
+  }
+
+  // when component unmounts
+  componentWillUnmount() {
+    window.removeEventListener('popstate', this.loadStateFromUrl);
   }
 
   // set active tab
