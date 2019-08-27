@@ -148,13 +148,7 @@ export class CompoundPredictions extends Component {
                     className='small neo4j_button'
                     icon={faExternalLinkAlt}
                     text='browser'
-                    onClick={() => {
-                      const link = document.createElement('a');
-                      link.target = '_blank';
-                      link.href = url;
-                      link.click();
-                      link.remove();
-                    }}
+                    href={url}
                     tooltipText={tooltipText['neo4j_browser']}
                   />
                   <IconButton
