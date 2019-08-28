@@ -41,7 +41,7 @@ export class CompoundInfo extends Component {
       ['treats', tooltipText['compound_treats'], compound.treats],
       ['palliates', tooltipText['compound_palliates'], compound.palliates],
       [
-        'relationships',
+        'edges',
         tooltipText['compound_edges'],
         toComma(compound.total_edges),
         compound.total_edges

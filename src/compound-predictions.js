@@ -4,6 +4,7 @@ import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import copy from 'copy-to-clipboard';
 
 import { IconButton } from 'hetio-frontend-components';
@@ -87,7 +88,7 @@ export class CompoundPredictions extends Component {
             { width: 75 },
             { width: 75 },
             { width: 50 },
-            { width: 50 },
+            { width: 75 },
             { width: 200 }
           ]}
           headClasses={[
@@ -155,7 +156,9 @@ export class CompoundPredictions extends Component {
                     className='small neo4j_button clipboard_button'
                     icon={faCopy}
                     text='command'
-                    onClick={() => copy(cmd)}
+                    onClick={(event) => copy(cmd)}
+                    flashText="copied"
+                    flashIcon={faCheck}
                     tooltipText={tooltipText['neo4j_command']}
                   />
                 </>
