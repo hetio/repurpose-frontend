@@ -35,7 +35,7 @@ export class DiseaseInfo extends Component {
       ['treats', tooltipText['disease_treats'], disease.treats],
       ['palliates', tooltipText['disease_palliates'], disease.palliates],
       [
-        'relationships',
+        'edges',
         tooltipText['disease_edges'],
         toComma(disease.total_edges),
         disease.total_edges
