@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "./static/css/main.6ca5ef92.css",
+    "main.css": "./static/css/main.css",
     "main.js": "./static/js/main.js",
     "main.js.map": "./static/js/main.js.map",
     "index.html": "./index.html",
-    "precache-manifest.21c5100dd00a8c44a5a7f9ed3477953b.js": "./precache-manifest.21c5100dd00a8c44a5a7f9ed3477953b.js",
+    "precache-manifest.44f5bec46164cbe9fdad93ee946f11f3.js": "./precache-manifest.44f5bec46164cbe9fdad93ee946f11f3.js",
     "service-worker.js": "./service-worker.js",
-    "static/css/main.6ca5ef92.css.map": "./static/css/main.6ca5ef92.css.map"
+    "static/css/main.css.map": "./static/css/main.css.map"
   },
   "entrypoints": [
-    "static/css/main.6ca5ef92.css",
+    "static/css/main.css",
     "static/js/main.js"
   ]
 }
